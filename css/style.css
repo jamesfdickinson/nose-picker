@@ -71,10 +71,10 @@ html, body {
   transform: matrix(1.367193409, 0.272266214, -0.275944076, 1.378927750, -941.522615, -986.018600);
 }
 .face-front {
-  /* Follow the nostril roof into a smooth descending curve on the left.
-     Continuing that curve beyond the finger's travel avoids a pointed seam
-     at either tilt limit, without the old vertical cheek-mask step. */
-  clip-path: path('M 0 0 H 1180 V 620 H 1100 L 1070 650 Q 1035 620 1004 638 C 970 650 950 705 900 720 L 0 1000 Z');
+  /* Trace the photo's skin/opening boundary in source pixels: left rim
+     (962, 676), roof near (1010, 639), and right rim (1049, 651).
+     Keep the skin above that arch in front of the finger at every angle. */
+  clip-path: path('M 0 0 H 1180 V 620 H 1100 L 1070 666 L 1049 651 C 1025 632 1000 634 983 650 C 974 657 966 667 962 676 C 946 703 924 715 900 720 L 0 1000 Z');
 }
 .nose-layer {
   position: absolute;
