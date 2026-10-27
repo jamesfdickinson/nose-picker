@@ -10,6 +10,11 @@ import { itemArt } from './item-art.js';
 export const STAGE_W = 480;
 export const STAGE_H = 800;
 
+// One source-pixel boundary for the foreground face and the item exit mask.
+// The exit uses the opposite side of this curve, transformed into head coordinates.
+const HEAD_TRANSFORM = 'matrix(1.367193409, 0.272266214, -0.275944076, 1.378927750, -941.522615, -986.018600)';
+const NOSTRIL_EDGE = 'M -2000 1000 H 0 L 900 720 C 924 715 946 703 962 676 C 966 667 974 657 983 650 C 1000 634 1025 632 1049 651 L 1070 666 L 1100 620 H 3000';
+
 export class NoseView {
   /**
    * @param {HTMLElement} root container that will hold the stage
@@ -34,7 +39,17 @@ export class NoseView {
 
   build() {
     this.root.innerHTML = `
-      <div class="head" id="head">
+      <div class="head" id="head" style="--head-transform: ${HEAD_TRANSFORM}">
+        <svg class="nose-mask-defs" width="0" height="0" aria-hidden="true" focusable="false">
+          <defs>
+            <clipPath id="nose-foreground" clipPathUnits="userSpaceOnUse">
+              <path d="${NOSTRIL_EDGE} V -2000 H -2000 Z" />
+            </clipPath>
+            <clipPath id="nose-exit" clipPathUnits="userSpaceOnUse">
+              <path transform="${HEAD_TRANSFORM}" d="${NOSTRIL_EDGE} V 4000 H -2000 Z" />
+            </clipPath>
+          </defs>
+        </svg>
         <img class="face-back" src="images/HeadFull.png" alt="" draggable="false">
         <div class="nose-layer">
           <img class="finger" id="finger" src="images/Layer 2.png" alt="" draggable="false">

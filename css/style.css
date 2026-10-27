@@ -62,19 +62,18 @@ html, body {
   transform-origin: 50% 50%;
 }
 .head img { position: absolute; pointer-events: none; }
+.nose-mask-defs { position: absolute; pointer-events: none; }
 .face-back, .face-front {
   /* Register the generated nose tip and nostril landmarks to the original
      349x613 photo, then apply its original scale and 14.346-degree rotation.
      Keep the source dimensions here: the matrix operates in source pixels. */
   left: 0; top: 0; width: 1180px; height: 1333px;
   transform-origin: 0 0;
-  transform: matrix(1.367193409, 0.272266214, -0.275944076, 1.378927750, -941.522615, -986.018600);
+  transform: var(--head-transform);
 }
 .face-front {
-  /* Trace the photo's skin/opening boundary in source pixels: left rim
-     (962, 676), roof near (1010, 639), and right rim (1049, 651).
-     Keep the skin above that arch in front of the finger at every angle. */
-  clip-path: path('M 0 0 H 1180 V 620 H 1100 L 1070 666 L 1049 651 C 1025 632 1000 634 983 650 C 974 657 966 667 962 676 C 946 703 924 715 900 720 L 0 1000 Z');
+  /* Share the traced nostril rim with emerging items (defined in nose.js). */
+  clip-path: url(#nose-foreground);
 }
 .nose-layer {
   position: absolute;
@@ -87,12 +86,12 @@ html, body {
   transform: translate(220px, 270px);
   will-change: transform;
 }
-/* Items only render below the top of the nostril hole, so the part still up the nose never
-   peeks out past the bridge. The face's upper layer hides the rest. */
+/* Use the same curved rim as the finger, including outside the photo silhouette,
+   so long items stay hidden above the opening while emerging. */
 .item-clip {
   position: absolute;
   inset: 0;
-  clip-path: polygon(-1000px 181px, 1500px 181px, 1500px 2000px, -1000px 2000px);
+  clip-path: url(#nose-exit);
 }
 .nose-item {
   position: absolute;

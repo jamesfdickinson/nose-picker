@@ -10,7 +10,7 @@
 // Items are drawn at their natural size (the XAML Grid sized to the image); the 256x256 art was
 // scaled to about half in the original storyboard.
 export const NOSTRIL = { x: 245, y: 214 }; // lower rim of the nostril hole, head coordinates
-const HOLE_DEPTH = 32; // rim to the top of the hole, where the face's upper layer starts
+const HOLE_DEPTH = 60; // start fully above the curved opening, including tilted item corners
 const OUT_ANGLE = 7; // degrees; items leave the nostril heading slightly forward of straight down
 const OUT = { x: Math.sin(OUT_ANGLE * Math.PI / 180), y: Math.cos(OUT_ANGLE * Math.PI / 180) };
 const GRAVITY = 2600; // px/s^2
