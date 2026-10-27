@@ -1,0 +1,13 @@
+{
+  "name": "nose-picker-js",
+  "version": "1.0.0",
+  "description": "Browser port of the Nose Picker Windows Phone game",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite"
+  },
+  "devDependencies": {
+    "vite": "^6.3.5"
+  }
+}

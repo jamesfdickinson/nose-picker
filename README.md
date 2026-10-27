@@ -10,8 +10,15 @@ Plain HTML, CSS and ES modules, no build step.
 
 then open http://localhost:8931/ (Vite also prints a LAN address for testing shake on a phone).
 
-`npm run build` writes a static bundle to `dist/` for wrapping in an app;
-`npm run preview` serves that bundle.
+Vite is only an optional local development server. Any static HTTP server can
+serve this folder; no build or npm install is needed for hosting.
+
+## GitHub Pages
+
+In Settings → Pages, choose **Deploy from a branch**, then **main** and **/ (root)**.
+Commit and push the site files, including `images/`, `audio/`, and `.nojekyll`.
+The site is served directly from the repository root with no Vite build:
+https://jamesfdickinson.github.io/nose-picker/
 
 ## Controls
 
@@ -21,7 +28,7 @@ then open http://localhost:8931/ (Vite also prints a LAN address for testing sha
 
 ## Layout
 
-- `public/` - images and audio, copied as-is by Vite.
+- `images/` and `audio/` - static assets served directly from the repository root.
 - `js/data.js` - the 81 items and 16 levels, generated from the WP8 XML.
 - `js/awards.js` - award definitions and checks.
 - `js/state.js` - coins, item counts, level scores, awards; saved to localStorage.
@@ -30,4 +37,3 @@ then open http://localhost:8931/ (Vite also prints a LAN address for testing sha
 - `js/nose.js` - the face, finger and item animation.
 - `js/challenge.js` - mine cart challenge mode.
 - `js/ui.js` - top bar, menu drawer, panels.
-# nose-picker
