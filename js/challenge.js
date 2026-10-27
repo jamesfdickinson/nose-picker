@@ -1,6 +1,7 @@
 // Challenge mode, ported from Controls/GameBoard.xaml(.cs) and Pages/GamePage.xaml.cs.
 // A mine cart rolls in showing the wanted item; the player has ITEM_SECONDS to pick it.
-import { getItem, recordLevelScore, checkAwards } from './state.js';
+import { getItem, recordLevelScore, checkAwards, state, onChange } from './state.js';
+import { itemArt } from './item-art.js';
 import * as audio from './audio.js';
 
 const ITEM_SECONDS = 8;
@@ -28,6 +29,9 @@ export class Challenge {
     this.deadline = 0;
     this.running = false;
     this.build();
+    onChange(() => {
+      if (this.wanted) this.cartItem.src = itemArt(this.wanted, state.realisticItems).src;
+    });
     this._itemHandler = item => this.itemComplete(item);
   }
 
@@ -81,7 +85,7 @@ export class Challenge {
     const total = this.level.items.length;
     if (this.index < total) {
       this.wanted = getItem(this.level.items[this.index]) || getItem('Marble');
-      this.cartItem.src = this.wanted.image;
+      this.cartItem.src = itemArt(this.wanted, state.realisticItems).src;
       this.cartItem.alt = this.wanted.name;
       this.hudProgress.textContent = `${this.index + 1} / ${total}`;
       if (this.onProgress) this.onProgress({ index: this.index, total, caught: this.caught });

@@ -33,6 +33,16 @@ const ui = new UI(document.getElementById('ui'), {
   toggleGestures(v) {
     nose.setShowGestures(v);
   },
+  previewItem(item) {
+    if (nose.itemBusy) {
+      ui.toast('Let the current item finish, then try again.');
+      return false;
+    }
+    challenge.stop();
+    ui.setMode('free pick');
+    nose.animate(item, { reward: false });
+    return true;
+  },
 });
 
 challenge.onGameOver = result => {

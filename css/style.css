@@ -53,9 +53,8 @@ html, body {
 }
 
 /* ---- Nose (PickNose.xaml layout) ---- */
-/* The head is pinned to the top of the screen rather than the centered frame, so the photo's
-   cut-off forehead (head y -158 at the bridge) always sits just above the screen edge, as the
-   ad banner hid it in the original. --frame-gap is the stage area above the frame (main.js). */
+/* Preserve the original gameplay frame: the finger, item exit, and head motion
+   all depend on this placement. --frame-gap comes from main.js. */
 .head {
   position: absolute;
   left: -73px; top: calc(140px - var(--frame-gap, 0px));
@@ -63,15 +62,19 @@ html, body {
   transform-origin: 50% 50%;
 }
 .head img { position: absolute; pointer-events: none; }
-.face-back {
-  left: -265.5px; top: -199.4px; width: 601.6px; height: 1066px;
-  transform-origin: 50% 50%;
-  transform: rotate(14.346deg);
+.face-back, .face-front {
+  /* Register the generated nose tip and nostril landmarks to the original
+     349x613 photo, then apply its original scale and 14.346-degree rotation.
+     Keep the source dimensions here: the matrix operates in source pixels. */
+  left: 0; top: 0; width: 1180px; height: 1333px;
+  transform-origin: 0 0;
+  transform: matrix(1.367193409, 0.272266214, -0.275944076, 1.378927750, -941.522615, -986.018600);
 }
 .face-front {
-  left: -123.5px; top: -258.2px; width: 601.6px; height: 1066px;
-  transform-origin: 0 0;
-  transform: rotate(14.346deg);
+  /* Only the nostril roof occludes the finger. End the foreground at the roof
+     on the left, leaving the nostril wall and cheek in the back layer so an
+     angled finger cannot be covered by a rectangular patch of skin. */
+  clip-path: path('M 0 0 H 1180 V 620 H 1100 L 1070 650 Q 1035 620 1004 638 Q 990 642 980 650 H 0 Z');
 }
 .nose-layer {
   position: absolute;
@@ -238,6 +241,7 @@ html, body {
   background: rgba(0,0,0,.5);
 }
 .drawer {
+  overflow-y: auto;
   position: absolute;
   top: 0; right: 0; bottom: 0;
   width: 260px;
@@ -331,6 +335,19 @@ button.primary, .panel-body button {
 .item-row.buy { cursor: pointer; }
 .item-row.buy img { filter: brightness(0) invert(.35); }
 .item-row.buy:active { background: #2a2a2a; }
+.art-demo .item-row {
+  margin: 10px 0;
+  display: grid;
+  grid-template-columns: 80px minmax(0, 1fr);
+  gap: 6px 14px;
+  padding: 12px;
+}
+.art-demo .item-row img { width: 80px; height: 80px; grid-row: 1 / 4; }
+.art-demo .item-detail { font-size: 14px; }
+.art-demo .item-row button {
+  grid-column: 2; justify-self: start;
+  margin: 0; padding: 8px 12px; font-size: 16px;
+}
 
 .awards-list { display: flex; flex-direction: column; gap: 4px; }
 .award { display: flex; gap: 10px; padding: 8px 6px; color: #777; font-size: 18px; }

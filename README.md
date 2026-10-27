@@ -25,10 +25,14 @@ https://jamesfdickinson.github.io/nose-picker/
 - Drag on the nose. Moves are read as U, D, L, R. Shake the phone for X / Y.
 - Keyboard (desktop testing): arrow keys, `X`, `Y`; Enter or a short pause ends the gesture.
 - Menu (top right): free pick, challenge levels, items store, awards, show gestures, reset.
+- Enable **realistic items** in the menu for alternative dice, cash, marble, key, and cupcake artwork. The setting is saved; other items use their original images.
+- **Preview realistic items** opens the demo gallery. **Try realistic** enables the variants and plays an item animation without awarding coins or adding it to your collection.
 
 ## Layout
 
 - `images/` and `audio/` - static assets served directly from the repository root.
+- `images/realistic/` - five transparent photographic demo sprites and their generation prompts.
+- `js/item-art.js` - alternate sprite paths and original gameplay dimensions.
 - `js/data.js` - the 81 items and 16 levels, generated from the WP8 XML.
 - `js/awards.js` - award definitions and checks.
 - `js/state.js` - coins, item counts, level scores, awards; saved to localStorage.

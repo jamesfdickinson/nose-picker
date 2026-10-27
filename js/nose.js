@@ -5,6 +5,7 @@ import { ITEM_MOTION, HEAD_BOBS, toKeyframes, itemKeyframes } from './animations
 import { GestureRecognizer } from './gesture.js';
 import { state, addFoundItem, persist } from './state.js';
 import * as audio from './audio.js';
+import { itemArt } from './item-art.js';
 
 export const STAGE_W = 480;
 export const STAGE_H = 800;
@@ -34,12 +35,12 @@ export class NoseView {
   build() {
     this.root.innerHTML = `
       <div class="head" id="head">
-        <img class="face-back" src="images/HeadLowerLayer.png" alt="" draggable="false">
+        <img class="face-back" src="images/HeadFull.png" alt="" draggable="false">
         <div class="nose-layer">
           <img class="finger" id="finger" src="images/Layer 2.png" alt="" draggable="false">
           <div class="item-clip" id="itemClip"><div class="nose-item" id="noseItem"><img id="noseItemImg" alt="" draggable="false"></div></div>
         </div>
-        <img class="face-front" src="images/HeadUpperLayer.png" alt="" draggable="false">
+        <img class="face-front" src="images/HeadFull.png" alt="" draggable="false">
         <div class="touch" id="touch"></div>
       </div>
       <div class="gesture-debug" id="gestureDebug" hidden>
@@ -109,7 +110,7 @@ export class NoseView {
     }
   }
 
-  animate(item) {
+  animate(item, { reward = true } = {}) {
     this.isPicking = true;
     audio.play(gestureHasShake(item.gesture) ? 'shake' : 'squeek');
 
@@ -122,20 +123,21 @@ export class NoseView {
     if (this.itemBusy) return;
     this.itemBusy = true;
     this.currentItem = item;
-    this.showItem(item)
+    this.showItem(item, { reward })
       .catch(() => { this.noseItem.classList.remove('active'); }) // animation cancelled
       .finally(() => { this.itemBusy = false; });
   }
 
-  async showItem(item) {
+  async showItem(item, { reward = true } = {}) {
     const { motion, scale } = ITEM_MOTION[item.animation] || ITEM_MOTION.Square_100x100;
     const img = this.noseItemImg;
-    img.src = item.image;
+    const art = itemArt(item, state.realisticItems);
+    img.src = art.src;
     img.alt = item.name;
     // need the natural size; decode() can stall in some webviews, so wait on load instead
     if (!img.complete) await new Promise(res => { img.onload = img.onerror = res; });
-    const w = (img.naturalWidth || 100) * scale;
-    const h = (img.naturalHeight || 100) * scale;
+    const w = (art.width || img.naturalWidth || 100) * scale;
+    const h = (art.height || img.naturalHeight || 100) * scale;
     this.noseItem.style.width = w + 'px';
     this.noseItem.style.height = h + 'px';
     this.noseItem.style.left = -w / 2 + 'px';
@@ -147,7 +149,7 @@ export class NoseView {
     await this.itemAnim.finished;
     this.noseItem.classList.remove('active');
     this.itemAnim = null;
-    this.itemComplete(item);
+    if (reward) this.itemComplete(item);
   }
 
   itemComplete(item) {

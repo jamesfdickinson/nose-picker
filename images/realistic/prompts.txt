@@ -1,0 +1,18 @@
+Generated with the built-in image_gen tool. Original images remain in images/; these five variants are optional.
+
+Delivery PNGs are downsampled to fit twice their gameplay dimensions, preserving aspect ratio and transparency. Game display sizes remain defined in js/item-art.js.
+
+reddice.png
+Use case: style-transfer. Create one photorealistic game item sprite based on the attached red die reference. One glossy red casino-style six-sided die with recessed white pips, correct die geometry, visible top and two sides, tiny realistic material imperfections, studio lighting from upper left. Preserve the reference subject, colors and approximate three-quarter orientation. Isolated object, tight framing with 5% clear margin, genuine transparent background, no floor or cast shadow, no text or watermark. Single asset, no sheet.
+
+cash.png
+Use case: style-transfer. Photorealistic game sprite of one tightly rolled bundle of US-style cash held by a thin tan rubber band, based on reference. Upright tall narrow cylinder with open spiral of layered banknote paper visible at top, green and black engraving, realistic paper fibers, gentle creases and curled edges. Match original orientation and silhouette. Product photography, soft studio light upper left, sharp details. Isolated on actual transparent background; no floor, no cast shadow, no extra props, no watermark. Whole roll fits with small clear margin, portrait canvas approximately 1:3 aspect. Single asset.
+
+marble.png
+Use case: style-transfer. One photorealistic clear glass toy marble, matching reference: green yellow and red swirling cat's-eye ribbon inside transparent spherical glass. Macro product photography with believable refraction, reflections and tiny imperfections, soft studio light upper left. Preserve spherical shape, green/red/yellow palette. Centered, fills 90% of square canvas. Genuine transparent background, no floor, no cast shadow, no pedestal, no extra objects, no text. Single isolated game sprite.
+
+key.png
+Use case: style-transfer. Photorealistic antique brass skeleton key matching reference. A single long narrow brass key with an oval open bow at the lower left, slender shaft angled slightly toward the upper right, small rectangular toothed bit at upper right. Real aged brass, subtle patina and scratches, physically believable metal reflections, macro studio product photography lit upper left. Entire key clearly visible on genuine transparent background, no floor or cast shadow. Preserve the reference orientation and silhouette, tight portrait framing with margin, no extra props or text. Single game sprite.
+
+cupcake.png
+Use case: style-transfer. Convert the attached cartoon cupcake into a photorealistic edible cupcake game sprite. One golden vanilla cupcake in a pleated tan paper wrapper, a thin chocolate layer, generous white cream then glossy pink strawberry frosting swirl, topped by one red cherry with curved brown stem. Preserve reference composition colors and upright frontal view with slight view of top. Real cake crumb and creamy frosting texture, soft studio lighting upper left, sharp food photography. Entire cupcake and stem isolated on actual transparent background, no plate, floor, cast shadow, background rectangle, extra objects or text. Single sprite centered in square canvas with small transparent margin.

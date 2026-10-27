@@ -11,6 +11,7 @@ const DEFAULTS = () => ({
   levelScores: {},     // level name -> { score, passes }
   awards: [],          // earned award ids
   showGestures: true,
+  realisticItems: false,
   seenIntro: false,
 });
 
@@ -80,6 +81,7 @@ export function unlockedLevels() {
 }
 
 export function setShowGestures(v) { state.showGestures = v; persist(); }
+export function setRealisticItems(v) { state.realisticItems = v; persist(); }
 export function markIntroSeen() { state.seenIntro = true; persist(); }
 
 export function reset() {

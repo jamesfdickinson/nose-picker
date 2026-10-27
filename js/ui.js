@@ -3,9 +3,10 @@ import { ITEMS, LEVELS } from './data.js';
 import { AWARDS } from './awards.js';
 import {
   state, onChange, foundItemCount, totalItemCount, awardsCount, totalAwards,
-  addCoins, buyItem, unlockedLevels, getItem, setShowGestures, reset, markIntroSeen,
+  addCoins, buyItem, unlockedLevels, getItem, setShowGestures, setRealisticItems, reset, markIntroSeen,
 } from './state.js';
 import { gestureToWords } from './words.js';
+import { itemArt, REALISTIC_ITEMS } from './item-art.js';
 
 export class UI {
   constructor(root, actions) {
@@ -34,6 +35,8 @@ export class UI {
         <button data-action="items">items</button>
         <button data-action="awards">awards</button>
         <label class="toggle"><input type="checkbox" id="showGestures"> show gestures</label>
+        <label class="toggle"><input type="checkbox" id="realisticItems"> realistic items</label>
+        <button data-action="artdemo">preview realistic items</button>
         <button data-action="freecoins">free coins</button>
         <button data-action="reset" class="danger">reset data</button>
       </nav>
@@ -61,11 +64,13 @@ export class UI {
     this.modeLabel = this.root.querySelector('#modeLabel');
     this.toastEl = this.root.querySelector('#toast');
     this.gestureToggle = this.root.querySelector('#showGestures');
+    this.artToggle = this.root.querySelector('#realisticItems');
     this.modal = this.root.querySelector('#modal');
     this.modalText = this.root.querySelector('#modalText');
     this.modalOk = this.root.querySelector('#modalOk');
     this.modalCancel = this.root.querySelector('#modalCancel');
     this.gestureToggle.checked = state.showGestures;
+    this.artToggle.checked = state.realisticItems;
 
     this.menuBtn.addEventListener('click', () => this.toggleDrawer());
     this.backdrop.addEventListener('click', () => this.toggleDrawer(false));
@@ -77,6 +82,14 @@ export class UI {
     this.gestureToggle.addEventListener('change', () => {
       setShowGestures(this.gestureToggle.checked);
       this.actions.toggleGestures(this.gestureToggle.checked);
+    });
+    this.artToggle.addEventListener('change', () => {
+      setRealisticItems(this.artToggle.checked);
+      // Refresh images in any open items, hints, or demo panel immediately.
+      for (const img of this.panelBody.querySelectorAll('img[data-item-name]:not([data-art-preview])')) {
+        img.src = itemArt(getItem(img.dataset.itemName), state.realisticItems).src;
+      }
+      this.toast(state.realisticItems ? 'Realistic demo: dice, cash, marble, key & cupcake' : 'Original item artwork');
     });
 
     // hidden cheat from CoinCount.xaml.cs: tap items, awards, coins in order for 10 coins
@@ -95,6 +108,7 @@ export class UI {
   }
 
   refreshBar() {
+    this.artToggle.checked = state.realisticItems;
     this.root.querySelector('#itemsCount').textContent = `${foundItemCount()}/${totalItemCount()}`;
     this.root.querySelector('#awardsCount').textContent = `${awardsCount()}/${totalAwards()}`;
     this.root.querySelector('#coinsCount').textContent = state.coins;
@@ -113,6 +127,7 @@ export class UI {
       case 'freepick': this.closePanel(); this.actions.freePick(); break;
       case 'challenge': this.showLevels(); break;
       case 'items': this.showItems(); break;
+      case 'artdemo': this.showArtDemo(); break;
       case 'awards': this.showAwards(); break;
       case 'freecoins': addCoins(20); this.toast('+20 coins'); break;
       case 'reset':
@@ -161,6 +176,26 @@ export class UI {
   }
 
   // ---- Items (Pages/ItemsPage.xaml.cs) ----
+  showArtDemo() {
+    const body = el('div', 'art-demo');
+    body.append(el('p', 'muted', 'Five realistic variants. Try one to enable realistic artwork, or use the menu toggle. All other items keep their original look.'));
+    for (const name of Object.keys(REALISTIC_ITEMS)) {
+      const item = getItem(name);
+      const row = itemRow(item, gestureToWords(item.gesture));
+      const img = row.querySelector('img');
+      img.src = itemArt(item, true).src;
+      img.dataset.artPreview = 'true';
+      const preview = el('button', 'primary', 'Try realistic');
+      preview.addEventListener('click', () => {
+        setRealisticItems(true);
+        if (this.actions.previewItem(item)) this.closePanel();
+      });
+      row.append(preview);
+      body.append(row);
+    }
+    this.openPanel('realistic demo', body);
+  }
+
   showItems() {
     const body = el('div', 'items-page');
     const found = ITEMS.filter(i => i.name in state.itemCounts);
@@ -283,7 +318,9 @@ function el(tag, cls = '', ...children) {
 function itemRow(item, detail, clickable = false) {
   const row = el('div', 'item-row' + (clickable ? ' buy' : ''));
   const img = document.createElement('img');
-  img.src = item.image; img.alt = ''; img.loading = 'lazy';
+  img.src = itemArt(item, state.realisticItems).src;
+  img.dataset.itemName = item.name;
+  img.alt = item.name; img.loading = 'lazy';
   row.append(img, el('span', 'item-name', item.name), el('span', 'item-detail', detail));
   return row;
 }
