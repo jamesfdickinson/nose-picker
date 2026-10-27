@@ -71,10 +71,10 @@ html, body {
   transform: matrix(1.367193409, 0.272266214, -0.275944076, 1.378927750, -941.522615, -986.018600);
 }
 .face-front {
-  /* Only the nostril roof occludes the finger. End the foreground at the roof
-     on the left, leaving the nostril wall and cheek in the back layer so an
-     angled finger cannot be covered by a rectangular patch of skin. */
-  clip-path: path('M 0 0 H 1180 V 620 H 1100 L 1070 650 Q 1035 620 1004 638 Q 990 642 980 650 H 0 Z');
+  /* Follow the nostril roof into a smooth descending curve on the left.
+     Continuing that curve beyond the finger's travel avoids a pointed seam
+     at either tilt limit, without the old vertical cheek-mask step. */
+  clip-path: path('M 0 0 H 1180 V 620 H 1100 L 1070 650 Q 1035 620 1004 638 C 970 650 950 705 900 720 L 0 1000 Z');
 }
 .nose-layer {
   position: absolute;
