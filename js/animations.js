@@ -11,6 +11,7 @@
 // scaled to about half in the original storyboard.
 export const NOSTRIL = { x: 245, y: 214 }; // lower rim of the nostril hole, head coordinates
 const HOLE_DEPTH = 60; // start fully above the curved opening, including tilted item corners
+const HANG_INSET = 24; // keep the held item tucked into the opening until gravity takes over
 const OUT_ANGLE = 7; // degrees; items leave the nostril heading slightly forward of straight down
 const OUT = { x: Math.sin(OUT_ANGLE * Math.PI / 180), y: Math.cos(OUT_ANGLE * Math.PI / 180) };
 const GRAVITY = 2600; // px/s^2
@@ -45,7 +46,7 @@ export function itemKeyframes(motion, w, h) {
   const spinSign = motion === 'drop' && Math.random() < 0.5 ? -1 : 1;
 
   // emerge: the leading edge moves from the top of the hole to `out` of the item past the rim
-  const s0 = -HOLE_DEPTH, s1 = len * m.out;
+  const s0 = -HOLE_DEPTH, s1 = len * m.out - HANG_INSET;
   const emerge = (s1 - s0) / m.speed * 1000;
   const hang = m.hang;
   // fall: keep the sliding speed, add gravity, until the center is off screen
